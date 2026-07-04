@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# Backend / ML artifacts
+mlruns/
+*.log
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.env.*
+
+# General environment files
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
