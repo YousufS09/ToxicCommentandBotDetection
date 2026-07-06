@@ -3,13 +3,6 @@ from pathlib import Path
 import datetime
 import json
 
-import joblib
-import pandas as pd
-import torch
-from sentence_transformers import SentenceTransformer
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-
 BASE_DIR = Path(__file__).resolve().parents[2]
 MODELS_DIR = BASE_DIR / "Models"
 TOXIC_MODEL_DIR = MODELS_DIR / "BERT_Toxic"
@@ -26,6 +19,9 @@ def _extract_checkpoint_step(path: Path) -> int:
 
 
 def _resolve_toxic_model_dir() -> Path:
+    if (TOXIC_MODEL_DIR / "model.safetensors").exists():
+        return TOXIC_MODEL_DIR
+
     checkpoints = sorted(
         [path for path in TOXIC_MODEL_DIR.glob("checkpoint-*") if path.is_dir()],
         key=_extract_checkpoint_step,
@@ -35,6 +31,8 @@ def _resolve_toxic_model_dir() -> Path:
 
 @lru_cache(maxsize=1)
 def get_toxic_assets():
+    from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
     model_dir = _resolve_toxic_model_dir()
     tokenizer = AutoTokenizer.from_pretrained(str(model_dir), local_files_only=True)
     model = AutoModelForSequenceClassification.from_pretrained(
@@ -46,6 +44,8 @@ def get_toxic_assets():
 
 @lru_cache(maxsize=1)
 def get_bot_model():
+    import joblib
+
     return joblib.load(BOT_MODEL_PATH)
 
 
@@ -57,6 +57,8 @@ def get_bot_feature_names():
 
 @lru_cache(maxsize=1)
 def get_bot_encoder():
+    from sentence_transformers import SentenceTransformer
+
     return SentenceTransformer(str(SBERT_MODEL_DIR))
 
 
@@ -76,6 +78,8 @@ def _interpret_binary_result(label: str, confidence: float, positive_label: str)
 
 
 def predict_toxic_text(text: str):
+    import torch
+
     tokenizer, model = get_toxic_assets()
     inputs = tokenizer(
         text,
@@ -101,6 +105,8 @@ def predict_toxic_text(text: str):
 
 
 def _resolve_account_age_days(user) -> int:
+    import pandas as pd
+
     if getattr(user, "account_age_days", None) is not None:
         return int(user.account_age_days)
 
@@ -111,6 +117,8 @@ def _resolve_account_age_days(user) -> int:
 
 
 def extract_bot_features(user):
+    import pandas as pd
+
     feature_names = get_bot_feature_names()
     sbert = get_bot_encoder()
     account_age_days = _resolve_account_age_days(user)
