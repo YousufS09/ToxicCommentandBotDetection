@@ -10,14 +10,16 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-      <div className="app-container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/toxic" element={<ToxicCommentsPage />} />
-          <Route path="/bot" element={<BotPage />} />
-          <Route path="/combined" element={<CombinedAnalysisPage />} />
-        </Routes>
-      </div>
+      <main className="app-container">
+        <div className="page-shell">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/toxic" element={<ToxicCommentsPage />} />
+            <Route path="/bot" element={<BotPage />} />
+            <Route path="/combined" element={<CombinedAnalysisPage />} />
+          </Routes>
+        </div>
+      </main>
     </BrowserRouter>
   );
 }

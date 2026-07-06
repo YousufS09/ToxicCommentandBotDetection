@@ -11,6 +11,21 @@ env/
 # Backend / ML artifacts
 mlruns/
 *.log
+Data/
+Models/BERT_Toxic/checkpoint-*/
+Models/BERT_Toxic/logs/
+Models/TFIDF/
+Models/**/optimizer.pt
+Models/**/scheduler.pt
+Models/**/rng_state.pth
+Models/**/trainer_state.json
+Models/**/training_args.bin
+Models/bow_vectorizer.pkl
+Models/feature_scaler.pkl
+Models/logreg_model.pkl
+Models/rf_classifier.pkl
+Models/tfidf_logistic_regression.pkl
+Models/tfidf_vectorizer.pkl
 
 # Frontend
 frontend/node_modules/
@@ -27,4 +42,3 @@ frontend/.env.*
 Thumbs.db
 .vscode/
 .idea/
-

@@ -3,6 +3,12 @@
 ## Backend Deployment
 
 The FastAPI backend lives in `backend/`.
+For Render, deploy from the repository root and use:
+
+```bash
+pip install -r requirements.txt
+uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT
+```
 
 Run locally:
 

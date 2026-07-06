@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -13,13 +15,19 @@ app = FastAPI(
 
 # -------------------- CORS CONFIG --------------------
 # Allows React frontend (localhost:3000) to call FastAPI (localhost:8000)
+default_origins = {
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+}
+configured_origins = {
+    origin.strip()
+    for origin in os.getenv("CORS_ORIGINS", "").split(",")
+    if origin.strip()
+}
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=sorted(default_origins | configured_origins),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
